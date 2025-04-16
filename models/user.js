@@ -27,7 +27,7 @@ class User{
       .then(user => {
         const cart = user.cart || { items: [] };
         const updatedCartItems = [...cart.items];
-  
+       
         const productIndex = updatedCartItems.findIndex(cp =>
           cp.productId.toString() === product._id.toString()
         );
@@ -64,6 +64,11 @@ class User{
           };
         });
       });
+  }
+  postOrder(){
+    const db = getDb();
+    const cart = this.cart;
+    
   }
   
   static findById(userId){

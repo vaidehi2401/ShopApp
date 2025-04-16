@@ -1,7 +1,11 @@
-const Sequelize = require('sequelize');
+const mongodb = require('mongodb');
+const { get } = require('../routes/admin');
+const getDb = require('../util/database').getDb;
+const ObjectId = mongodb.ObjectId;
 
-const sequelize = require('../util/database');
-
+class Order{
+  constructor()
+}
 const Order = sequelize.define('order', {
   id: {
     type: Sequelize.INTEGER,

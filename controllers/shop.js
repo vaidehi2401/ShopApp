@@ -1,5 +1,7 @@
 const Product = require('../models/product');
-
+const mongodb = require('mongodb');
+const ObjectId = mongodb.ObjectId;
+const getDb = require('../util/database').getDb;
 
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId;
@@ -108,11 +110,19 @@ exports.postCart = (req, res, next) => {
 
 exports.postCartDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  return req.user
-    .getCart()
-    .then((items=>{
-    return items.filter(item => item.productId.toString()===prodId)
-    }))
+  const db = getDb();
+  const cart = req.user.cart.items;
+      const updatedItems = cart.filter(item => item.productId.toString()!==prodId);
+    return db.collection('users').updateOne(
+      { _id: new ObjectId(req.user._id) },
+      { $set: { 'cart.items': updatedItems } }
+    )
+  .then(() => {
+    res.redirect('/cart'); // ← chained cleanly
+  })
+  .catch(err => {
+    console.log(err);
+  });
 };
 
 exports.postOrder = (req, res, next) => {
