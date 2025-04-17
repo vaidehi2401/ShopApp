@@ -104,13 +104,10 @@ exports.postCart = (req, res, next) => {
 
 exports.postCartDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  const db = getDb();
   const cart = req.user.cart.items;
       const updatedItems = cart.filter(item => item.productId.toString()!==prodId);
-    return db.collection('users').updateOne(
-      { _id: new ObjectId(req.user._id) },
-      { $set: { 'cart.items': updatedItems } }
-    )
+      req.cart.items = updatedItems;
+   user.save()
   .then(() => {
     res.redirect('/cart'); // ← chained cleanly
   })
