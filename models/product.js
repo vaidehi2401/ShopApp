@@ -75,8 +75,7 @@
 
 
 // module.exports = Product;
-const { default: mongoose } = require('mongoose');
-const moongose = require('mongoose');
+const mongoose = require('mongoose');
 const Schema= mongoose.Schema;
 const productSchema = new Schema({
     title:{
@@ -101,4 +100,4 @@ const productSchema = new Schema({
         required: true
     }
 })
-module.exports= moongose.model('Product', productSchema);
+module.exports= mongoose.model('Product', productSchema);

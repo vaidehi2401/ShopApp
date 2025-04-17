@@ -47,16 +47,18 @@ exports.getIndex = (req, res, next) => {
 
 exports.getCart = (req, res, next) => {
   req.user
-    .getCart()
-        .then(products => {
-          res.render('shop/cart', {
-            path: '/cart',
-            pageTitle: 'Your Cart',
-            products: products
-          });
+    .populate('cart.items.productId') // no execPopulate
+    .then(user => {
+      const products = user.cart.items;
+      res.render('shop/cart', {
+        path: '/cart',
+        pageTitle: 'Your Cart',
+        products: products
+      });
     })
     .catch(err => console.log(err));
 };
+
 
 exports.postCart = (req, res, next) => {
   const prodId = req.body.productId;
@@ -64,6 +66,7 @@ exports.postCart = (req, res, next) => {
     return req.user.addToCart(product);
   })
   .then(result=>{
+    console.log(result, "Added to cart")
     res.redirect('/cart')
   })
 //   let fetchedCart;

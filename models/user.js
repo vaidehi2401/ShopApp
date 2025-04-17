@@ -107,9 +107,10 @@
 // }
 
 // module.exports = User;
-const { default: mongoose } = require('mongoose');
-const moongose = require('mongoose');
+//const { default: mongoose } = require('mongoose');
+const mongoose = require('mongoose');
 const Schema= mongoose.Schema;
+const Product = require('./product');
 const userSchema = new Schema({
     name:{
         type:String,
@@ -128,4 +129,40 @@ const userSchema = new Schema({
     ]
    }
 })
-module.exports= moongose.model('User', userSchema);
+userSchema.methods.addToCart = function(product){
+    
+    const cartItems= this.cart?.items || [];
+
+      const updatedCartItems = [...cartItems];
+     
+      const productIndex = updatedCartItems.findIndex(cp =>
+        cp.productId.toString() === product._id.toString()
+      );
+
+      if (productIndex >= 0) {
+        updatedCartItems[productIndex].quantity += 1;
+      } else {
+        updatedCartItems.push({
+          productId: product._id,
+          quantity: 1
+        });
+      }
+       this.cart.items =updatedCartItems;
+      return this.save();
+}
+// userSchema.methods.getCart= function(){
+//     const productIds = this.cart.items.map(i => i.productId);
+//  return Product
+//       .find({ _id: { $in: productIds } })  
+//       .then(products => {
+//         return products.map(p => {
+//           return {
+//             ...p,
+//             quantity: this.cart.items.find(i =>
+//               i.productId.toString() === p._id.toString()
+//             ).quantity
+//           };
+//         });
+//       });
+// }
+module.exports= mongoose.model('User', userSchema);
