@@ -150,19 +150,6 @@ userSchema.methods.addToCart = function(product){
        this.cart.items =updatedCartItems;
       return this.save();
 }
-// userSchema.methods.getCart= function(){
-//     const productIds = this.cart.items.map(i => i.productId);
-//  return Product
-//       .find({ _id: { $in: productIds } })  
-//       .then(products => {
-//         return products.map(p => {
-//           return {
-//             ...p,
-//             quantity: this.cart.items.find(i =>
-//               i.productId.toString() === p._id.toString()
-//             ).quantity
-//           };
-//         });
-//       });
-// }
+
+
 module.exports= mongoose.model('User', userSchema);
