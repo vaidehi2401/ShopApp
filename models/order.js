@@ -3,9 +3,7 @@ const { get } = require('../routes/admin');
 const getDb = require('../util/database').getDb;
 const ObjectId = mongodb.ObjectId;
 
-class Order{
-  constructor()
-}
+
 const Order = sequelize.define('order', {
   id: {
     type: Sequelize.INTEGER,
